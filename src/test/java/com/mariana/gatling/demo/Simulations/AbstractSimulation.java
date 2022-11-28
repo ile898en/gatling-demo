@@ -2,11 +2,9 @@ package com.mariana.gatling.demo.Simulations;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import com.google.common.base.Strings;
 import com.mariana.gatling.demo.Config.SystemProperties;
-import io.gatling.javaapi.core.CoreDsl;
-import io.gatling.javaapi.core.FeederBuilder;
-import io.gatling.javaapi.core.OpenInjectionStep;
-import io.gatling.javaapi.core.Simulation;
+import io.gatling.javaapi.core.*;
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,18 +21,8 @@ public abstract class AbstractSimulation extends Simulation {
     private static final SimpleDateFormat ZERO_TIMEZONE_DATE_FORMAT =
             DateUtil.newSimpleFormat(DatePattern.PURE_DATETIME_MS_PATTERN, null, TimeZone.getTimeZone("GMT+00:00"));
 
-    private static final String BASE_DIR = "/home/admin/app/aquaman-pt/aquaman-pt.gatling/target/gatling";
-
-    private long starsAt;
-
     {
-        setUp(
-                CoreDsl.scenario(this.scenarioName())
-                        .feed(this.feederBuilder().circular())
-                        .exec(this.requestBuilder())
-                        .injectOpen(this.stepBuilder())
-                        .protocols(SystemProperties.DEFAULT_PROTOCOL)
-        );
+        setUp(this.populationBuilder());
     }
 
     /**
@@ -51,7 +39,7 @@ public abstract class AbstractSimulation extends Simulation {
     abstract HttpRequestActionBuilder requestBuilder();
 
     /**
-     * <p>Make performance test data({@link FeederBuilder})</p>
+     * <p>Make performance test data({@link FeederBuilder}), the return value cannot be null.</p>
      * You can get {@link FeederBuilder} from:
      * <ul>
      *     <li>
@@ -101,7 +89,8 @@ public abstract class AbstractSimulation extends Simulation {
      */
     @Override
     public void before() {
-
+        logger.info("Performance test start...");
+        // do some logic here
     }
 
     /**
@@ -110,20 +99,52 @@ public abstract class AbstractSimulation extends Simulation {
      *     The report folder will be generated in 'target/gatling/' after performance test finished，<br>
      *     the folder will like:
      *     <pre>
-     *         - target
-     *              - gatling
-     *
+     *         - target/
+     *              - gatling/
+     *                  - samplesimulation-20221128171051376/
+     *                      - js/
+     *                      - style/
+     *                      - index.html
+     *                      - req_ipinfo-io-69a2c.html
+     *                      - simulation.log
      *     </pre>
+     *     just open the 'index.html' on browser to check thr reports.
      * </p>
      */
     @Override
     public void after() {
-
+        logger.info("Performance test finished...");
+        // do some logic here
     }
 
     private OpenInjectionStep stepBuilder() {
         return CoreDsl.constantUsersPerSec(SystemProperties.QPS)
                 .during(SystemProperties.DURATION);
+    }
+
+    private PopulationBuilder populationBuilder() {
+
+        String scenarioName = this.scenarioName();
+        HttpRequestActionBuilder requestBuilder = this.requestBuilder();
+        FeederBuilder<Object> feederBuilder = this.feederBuilder();
+
+        if (Strings.isNullOrEmpty(scenarioName)) {
+            throw new RuntimeException("the scenario name is required.");
+        }
+
+        if (null == requestBuilder) {
+            throw new RuntimeException("the HttpRequestActionBuilder is required.");
+        }
+
+        ScenarioBuilder scenarioBuilder = CoreDsl.scenario(scenarioName);
+
+        if (null != feederBuilder) {
+            scenarioBuilder.feed(feederBuilder);
+        }
+
+        return scenarioBuilder.exec(requestBuilder)
+                .injectOpen(this.stepBuilder())
+                .protocols(SystemProperties.DEFAULT_PROTOCOL);
     }
 
 }

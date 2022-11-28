@@ -11,8 +11,8 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <gatling.version>3.7.6</gatling.version>
-        <gatling-maven-plugin.version>4.1.5</gatling-maven-plugin.version>
+        <gatling.version>3.8.4</gatling.version>
+        <gatling-maven-plugin.version>4.2.7</gatling-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.71</version>
+            <version>1.2.83</version>
         </dependency>
 
         <dependency>
@@ -75,7 +75,7 @@
                 <configuration>
                     <runMultipleSimulations>true</runMultipleSimulations>
                     <includes>
-                        <param>Simulations.*</param>
+                        <param>com.mariana.gatling.demo.Simulations.*</param>
                     </includes>
                 </configuration>
             </plugin>
