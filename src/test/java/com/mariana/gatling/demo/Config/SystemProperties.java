@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class SystemProperties {
 
-    private static final String BASE_URL = "https://api.hhocool.com";
+    public static final String BASE_URL = "https://api.hhocool.com";
 
     public static final String SIMULATION_NAME               = getSimulationName();
     public static final Integer QPS                          = getQPS();

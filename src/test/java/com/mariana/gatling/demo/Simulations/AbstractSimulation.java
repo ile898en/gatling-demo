@@ -25,9 +25,6 @@ public abstract class AbstractSimulation extends Simulation {
 
     private static final String BASE_DIR = "/home/admin/app/aquaman-pt/aquaman-pt.gatling/target/gatling";
 
-    private static final Integer RETRY_GAP = 1;             // 重试间隔1s
-    private static final Integer RETRY_TIMES = 60;          // 重试总次数
-
     private long starsAt;
 
     {
@@ -110,8 +107,8 @@ public abstract class AbstractSimulation extends Simulation {
     /**
      * The hook function execute after performance test finished.
      * <p>
-     *     The report dir will be generated in './target/gatling/' after performance test finished，
-     *     the dir will like:
+     *     The report folder will be generated in 'target/gatling/' after performance test finished，<br>
+     *     the folder will like:
      *     <pre>
      *         - target
      *              - gatling

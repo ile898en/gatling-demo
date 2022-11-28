@@ -11,7 +11,6 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <spring-boot.version>2.5.5</spring-boot.version>
         <gatling.version>3.7.6</gatling.version>
         <gatling-maven-plugin.version>4.1.5</gatling-maven-plugin.version>
     </properties>
@@ -43,12 +42,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.aliyun.oss</groupId>
-            <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.8.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>io.gatling.highcharts</groupId>
             <artifactId>gatling-charts-highcharts</artifactId>
             <version>${gatling.version}</version>
@@ -68,12 +61,6 @@
             <groupId>io.gatling</groupId>
             <artifactId>gatling-maven-plugin</artifactId>
             <version>${gatling-maven-plugin.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
 
     </dependencies>
