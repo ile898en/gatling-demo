@@ -7,9 +7,13 @@ import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpDsl;
 
 /**
- * 在项目根目录下执行以下命令即可开始运行本类
+ * 在项目根目录下执行以下命令即可开始运行本类，qps参数控制并发数，duration参数控制持续时间，单位是秒
  * <pre>
- *     sudo mvn -e gatling:test -Dlogback.level=DEBUG -Dgatling.simulationClass=com.mariana.gatling.demo.Simulations.CustomSimulation
+ *     sudo mvn -e gatling:test \
+ *          -Dlogback.level=DEBUG \
+ *          -Dgatling.simulationClass=com.mariana.gatling.demo.Simulations.CustomSimulation \
+ *          -Dqps=1 \
+ *          -Dduration=1
  * </pre>
  */
 public class CustomSimulation extends Simulation {
