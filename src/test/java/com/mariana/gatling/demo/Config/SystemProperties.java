@@ -10,16 +10,32 @@ import java.util.Map;
 
 public class SystemProperties {
 
+    /**
+     * 配置要压测endpoint的主机名（域名）
+     */
     public static final String BASE_URL = "https://api.hhocool.com";
 
+    /**
+     * 配置要执行的Simulation类路径，例如：
+     *      com.mariana.gatling.demo.Simulations.SampleSimulation
+     */
     public static final String SIMULATION_NAME               = getSimulationName();
-    public static final Integer QPS                          = getQPS();
-    public static final Integer DURATION                     = getDuration();
-    public static final HttpProtocolBuilder DEFAULT_PROTOCOL = defaultProtocol();
 
     /**
-     * choose which simulation class will be processed
+     * 配置要压到多少QPS
      */
+    public static final Integer QPS                          = getQPS();
+
+    /**
+     * 配置压测持续多长时间，单位是秒(s)
+     */
+    public static final Integer DURATION                     = getDuration();
+
+    /**
+     * 默认的HttpProtocol，其中包含默认的请求头、base url、是否复用连接等等
+     */
+    public static final HttpProtocolBuilder DEFAULT_PROTOCOL = defaultProtocol();
+
     private static String getSimulationName() {
         String name = System.getProperty("gatling.simulationClass", "");
         if (Strings.isNullOrEmpty(name))
@@ -27,9 +43,6 @@ public class SystemProperties {
         return name;
     }
 
-    /**
-     * QPS
-     */
     private static Integer getQPS() {
         int qps = Integer.parseInt(System.getProperty("qps", "1"));
         if (qps <= 0)
@@ -37,9 +50,6 @@ public class SystemProperties {
         return qps;
     }
 
-    /**
-     * how long will the performance test last (seconds)
-     */
     private static Integer getDuration() {
         int duration = Integer.parseInt(System.getProperty("duration", "1"));
         if (duration <= 0)

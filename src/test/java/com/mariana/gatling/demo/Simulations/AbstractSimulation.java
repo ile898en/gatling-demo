@@ -26,20 +26,21 @@ public abstract class AbstractSimulation extends Simulation {
     }
 
     /**
-     * The performance test scenario's name. Cannot be empty.
+     * 压测场景名称，不能为空
      * eg:
      *  return "用户刷Feeds流";
      */
     abstract String scenarioName();
 
     /**
-     * Build HttpRequest by {@link io.gatling.javaapi.http.HttpDsl}
+     * 通过{@link io.gatling.javaapi.http.HttpDsl}构建HttpRequest对象<br><br>
      * @see <a href="https://gatling.io/docs/gatling/reference/current/http/request/">https://gatling.io/docs/gatling/reference/current/http/request/</a>
      */
     abstract HttpRequestActionBuilder requestBuilder();
 
     /**
-     * <p>Make performance test data({@link FeederBuilder}), the return value cannot be null.</p>
+     * {@link FeederBuilder}对象可以理解为压测过程中需要消费的数据，通常是一个List<{@code Map}<{@code String}, {@code Object}>对象或者一个JsonArray。<br>
+     * 该方法的返回值不可以为null，可以是一个空的List。<br><br>
      * You can get {@link FeederBuilder} from:
      * <ul>
      *     <li>
@@ -52,15 +53,14 @@ public abstract class AbstractSimulation extends Simulation {
      *                      ImmutableMap..of("token", "token-value-3")
      *                      ...
      *                  )
-     *             ).circular();
+     *             );
      *         </pre>
      *     </li>
      *     <li>
      *         <p>A json file like <span style="color:#78dce8">resources/data/example_data.json</span></p><br>
      *         then you can use {@link CoreDsl#jsonFile(String)} like this:
      *         <pre>
-     *             return CoreDsl.jsonFile("data/example_data.json")
-     *                           .circular();
+     *             return CoreDsl.jsonFile("data/example_data.json");
      *         </pre>
      *     </li>
      * </ul>
@@ -85,7 +85,7 @@ public abstract class AbstractSimulation extends Simulation {
     abstract FeederBuilder<Object> feederBuilder();
 
     /**
-     * The hook function execute before performance test started.
+     * The hook function execute before performance test start.
      */
     @Override
     public void before() {
