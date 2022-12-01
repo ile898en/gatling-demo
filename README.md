@@ -1,5 +1,5 @@
-1. You can add custom simulation class follow 'com.mariana.gatling.demo.Simulations.SampleSimulation'
-2. Then just execute the follow command.
+1. You can add custom simulation class follow by [CustomSimulation](src/test/java/com/mariana/gatling/demo/Simulations/CustomSimulation.java)
+2. Then just run the below command.
 ```shell
 # logback.level: see resources/logback.xml for more information
 # gatling.simulationClass: which simulation class will be processed
