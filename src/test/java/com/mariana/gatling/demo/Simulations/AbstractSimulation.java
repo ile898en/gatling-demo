@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.function.Function;
 
@@ -36,7 +37,7 @@ public abstract class AbstractSimulation extends Simulation {
      * 通过{@link io.gatling.javaapi.http.HttpDsl}构建HttpRequest对象<br><br>
      * @see <a href="https://gatling.io/docs/gatling/reference/current/http/request/">https://gatling.io/docs/gatling/reference/current/http/request/</a>
      */
-    abstract HttpRequestActionBuilder requestBuilder();
+    abstract List<HttpRequestActionBuilder> requestBuilders();
 
     /**
      * {@link FeederBuilder}对象可以理解为压测过程中需要消费的数据，通常是一个List<{@code Map}<{@code String}, {@code Object}>对象或者一个JsonArray。<br>
@@ -125,15 +126,15 @@ public abstract class AbstractSimulation extends Simulation {
     private PopulationBuilder populationBuilder() {
 
         String scenarioName = this.scenarioName();
-        HttpRequestActionBuilder requestBuilder = this.requestBuilder();
+        List<HttpRequestActionBuilder> requestBuilders = this.requestBuilders();
         FeederBuilder<Object> feederBuilder = this.feederBuilder();
 
         if (Strings.isNullOrEmpty(scenarioName)) {
             throw new RuntimeException("the scenario name is required.");
         }
 
-        if (null == requestBuilder) {
-            throw new RuntimeException("the HttpRequestActionBuilder is required.");
+        if (null == requestBuilders) {
+            throw new RuntimeException("the HttpRequestActionBuilders is required.");
         }
 
         ScenarioBuilder scenarioBuilder = CoreDsl.scenario(scenarioName);
@@ -142,7 +143,11 @@ public abstract class AbstractSimulation extends Simulation {
             scenarioBuilder.feed(feederBuilder);
         }
 
-        return scenarioBuilder.exec(requestBuilder)
+        for (HttpRequestActionBuilder requestActionBuilder : requestBuilders) {
+            scenarioBuilder.exec(requestActionBuilder);
+        }
+
+        return scenarioBuilder
                 .injectOpen(this.stepBuilder())
                 .protocols(SystemProperties.DEFAULT_PROTOCOL);
     }
